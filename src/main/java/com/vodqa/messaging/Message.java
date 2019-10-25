@@ -10,20 +10,20 @@ public class Message {
 
     int id;
     String method;
-    Map<String,Object> params;
+    Map<String, Object> params;
 
-    public Message(int id , String methodName){
+    public Message(int id, String methodName) {
         this.id = id;
         this.method = methodName;
     }
 
-    public void addParameter(String key, Object value){
-        if(Objects.isNull(params))
+    public void addParameter(String key, Object value) {
+        if (Objects.isNull(params))
             params = new HashMap<>();
-        params.put(key,value);
+        params.put(key, value);
     }
 
-    public String toJSON(){
+    public String toJSON() {
         Gson gson = new Gson();
         return gson.toJson(this);
     }

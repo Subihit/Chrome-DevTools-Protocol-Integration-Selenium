@@ -14,31 +14,30 @@ import java.io.IOException;
 
 public class Demo {
 
-    private WebDriver driver ;
+    private WebDriver driver;
     Utils utils = new Utils();
     String wsurl;
 
     @BeforeMethod
     public void setup() throws IOException {
         driver = utils.launchBrowser();
-         wsurl = utils.getWebSocketDebuggerURL();
+        wsurl = utils.getWebSocketDebuggerURL();
     }
 
     @AfterMethod
-    public void teardown(){
+    public void teardown() {
         utils.stopChrome();
     }
 
     @Test
-    public void mockGeoLocation() throws  IOException, WebSocketException,InterruptedException {
+    public void mockGeoLocation() throws IOException, WebSocketException, InterruptedException {
         CDPClient cdpClient = new CDPClient(wsurl);
-        cdpClient.sendMessage(MessageBuilder.geoLocationMessage(90,51.501364,-0.1440787));
+        cdpClient.sendMessage(MessageBuilder.geoLocationMessage(90, 51.501364, -0.1440787));
         driver.navigate().to("https://www.google.com.sg/maps");
         Thread.sleep(5000);
         driver.findElement(By.cssSelector(".widget-mylocation-button-icon-common")).click();
         Thread.sleep(10000);
     }
-
 
 
 }
