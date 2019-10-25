@@ -23,7 +23,10 @@
 hs_err_pid*
 
 /target
+
 *.xml
+!pom.xml
+
 *.iml
 *.DS_Store
 
