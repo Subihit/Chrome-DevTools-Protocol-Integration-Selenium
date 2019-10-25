@@ -37,8 +37,6 @@ public class Demo {
         Thread.sleep(5000);
         driver.findElement(By.cssSelector(".widget-mylocation-button-icon-common")).click();
         Thread.sleep(10000);
-//        driver.navigate().to("https://www.amazon.com/");
-//        Thread.sleep(10000);
     }
 
 
