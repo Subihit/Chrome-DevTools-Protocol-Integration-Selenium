@@ -35,8 +35,10 @@ public class Demo {
     @Test
     public void mockGeoLocation() throws IOException, WebSocketException, InterruptedException {
         cdpClient.sendMessage(MessageBuilder.geoLocationMessage(90, 51.501364, -0.1440787));
-        driver.navigate().to("https://www.google.com.sg/maps");
+
+        driver.navigate().to("https://www.google.com/maps");
         utils.waitFor(5);
+
         driver.findElement(By.cssSelector(".widget-mylocation-button-icon-common")).click();
         utils.waitFor(10);
     }
@@ -44,13 +46,17 @@ public class Demo {
     @Test
     public void monitorNetworkCalls() throws IOException, WebSocketException, InterruptedException {
         cdpClient.sendMessage(MessageBuilder.enableNetworkCallMonitoringMessage(200));
+
         driver.navigate().to("http://petstore.swagger.io/v2/swagger.json");
         utils.waitFor(3);
+
         String responseMessage = cdpClient.getResponseMessage("Network.requestWillBeSent", 5);
         JSONObject jsonObject = new JSONObject(responseMessage);
         jsonObject.getJSONObject("params").getString("requestId");
         String requestID = jsonObject.getJSONObject("params").getString("requestId");
+
         cdpClient.sendMessage(MessageBuilder.getResponseBodyMessage(2000, requestID));
+
         String networkResponse = cdpClient.getResponseBodyMessage(2000);
         System.out.println("Network reponse : " + networkResponse);
 
