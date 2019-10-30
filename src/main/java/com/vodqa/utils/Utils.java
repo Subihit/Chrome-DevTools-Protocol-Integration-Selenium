@@ -20,6 +20,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 public class Utils {
@@ -97,6 +98,15 @@ public class Utils {
         int max = 999999;
         Random r = new Random();
         return r.nextInt((max - min) + 1) + min;
+    }
+
+    public void waitFor(long time) {
+        try {
+            TimeUnit.SECONDS.sleep(time);
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 

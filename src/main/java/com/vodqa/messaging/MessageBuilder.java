@@ -1,5 +1,7 @@
 package com.vodqa.messaging;
 
+import org.apache.commons.codec.binary.Base64;
+
 public class MessageBuilder {
 
     public static String geoLocationMessage(int id, double latitude, double longitude) {
@@ -20,5 +22,15 @@ public class MessageBuilder {
         return message;
     }
 
+    public static String buildRequestInterceptorPatternMessage(int id, String pattern, String resourceType) {
+        String message = String.format("{\"id\":%s,\"method\":\"Network.setRequestInterception\",\"params\":{\"patterns\":[{\"urlPattern\":\"%s\",\"resourceType\":\"%s\",\"interceptionStage\":\"HeadersReceived\"}]}}", id, pattern, resourceType);
+        return message;
+    }
+
+    public static String buildGetContinueInterceptedRequestMessage(int id, String interceptionId, String response) {
+        String encodedResponse = new String(Base64.encodeBase64(response.getBytes()));
+        String message = String.format("{\"id\":%s,\"method\":\"Network.continueInterceptedRequest\",\"params\":{\"interceptionId\":\"%s\",\"rawResponse\":\"%s\"}}", id, interceptionId, encodedResponse);
+        return message;
+    }
 
 }

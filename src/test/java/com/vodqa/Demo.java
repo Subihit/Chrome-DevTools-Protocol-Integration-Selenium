@@ -18,11 +18,13 @@ public class Demo {
     private WebDriver driver;
     Utils utils = new Utils();
     String wsurl;
+    CDPClient cdpClient;
 
     @BeforeMethod
     public void setup() throws IOException {
         driver = utils.launchBrowser();
         wsurl = utils.getWebSocketDebuggerURL();
+        cdpClient = new CDPClient(wsurl);
     }
 
     @AfterMethod
@@ -32,20 +34,18 @@ public class Demo {
 
     @Test
     public void mockGeoLocation() throws IOException, WebSocketException, InterruptedException {
-        CDPClient cdpClient = new CDPClient(wsurl);
         cdpClient.sendMessage(MessageBuilder.geoLocationMessage(90, 51.501364, -0.1440787));
         driver.navigate().to("https://www.google.com.sg/maps");
-        Thread.sleep(5000);
+        utils.waitFor(5);
         driver.findElement(By.cssSelector(".widget-mylocation-button-icon-common")).click();
-        Thread.sleep(10000);
+        utils.waitFor(10);
     }
 
     @Test
     public void monitorNetworkCalls() throws IOException, WebSocketException, InterruptedException {
-        CDPClient cdpClient = new CDPClient(wsurl);
         cdpClient.sendMessage(MessageBuilder.enableNetworkCallMonitoringMessage(200));
         driver.navigate().to("http://petstore.swagger.io/v2/swagger.json");
-        Thread.sleep(3000);
+        utils.waitFor(3);
         String responseMessage = cdpClient.getResponseMessage("Network.requestWillBeSent", 5);
         JSONObject jsonObject = new JSONObject(responseMessage);
         jsonObject.getJSONObject("params").getString("requestId");
@@ -54,6 +54,14 @@ public class Demo {
         String networkResponse = cdpClient.getResponseBodyMessage(2000);
         System.out.println("Network reponse : " + networkResponse);
 
+    }
+
+    @Test
+    public void mockResponseCalls() throws Exception {
+        cdpClient.sendMessage(MessageBuilder.buildRequestInterceptorPatternMessage(2000, "*", "Document"));
+        cdpClient.mockResponse("Automate and Chill !");
+        driver.navigate().to("http://petstore.swagger.io/v2/swagger.json");
+        utils.waitFor(5);
     }
 
 

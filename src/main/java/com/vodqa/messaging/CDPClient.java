@@ -87,5 +87,19 @@ public class CDPClient {
         }
     }
 
+    public void mockResponse(String mockMessage) {
+        new Thread(() -> {
+            try {
+                String message = this.getResponseMessage("Network.requestIntercepted", 5);
+                JSONObject jsonObject = new JSONObject(message);
+                String interceptionId = jsonObject.getJSONObject("params").getString("interceptionId");
+                this.sendMessage(MessageBuilder.buildGetContinueInterceptedRequestMessage(2000, interceptionId, mockMessage));
+                return;
+            } catch (Exception e) {
+                //do nothing
+            }
+        }).start();
+    }
+
 
 }
