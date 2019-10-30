@@ -87,7 +87,7 @@ public class CDPClient {
         }
     }
 
-    public void mockResponse(String mockMessage) {
+    public void sendMockedResponse(String mockMessage) {
         new Thread(() -> {
             try {
                 String message = this.getResponseMessage("Network.requestIntercepted", 5);

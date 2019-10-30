@@ -13,7 +13,7 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 
-public class Demo {
+public class CDPDemo {
 
     private WebDriver driver;
     Utils utils = new Utils();
@@ -65,7 +65,7 @@ public class Demo {
     @Test
     public void mockResponseCalls() throws Exception {
         cdpClient.sendMessage(MessageBuilder.buildRequestInterceptorPatternMessage(2000, "*", "Document"));
-        cdpClient.mockResponse("Automate and Chill !");
+        cdpClient.sendMockedResponse("Automate and Chill !");
         driver.navigate().to("http://petstore.swagger.io/v2/swagger.json");
         utils.waitFor(5);
     }
