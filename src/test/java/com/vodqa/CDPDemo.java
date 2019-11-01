@@ -47,7 +47,7 @@ public class CDPDemo {
     public void monitorNetworkCalls() throws IOException, WebSocketException, InterruptedException {
         cdpClient.sendMessage(MessageBuilder.enableNetworkCallMonitoringMessage(200));
 
-        driver.navigate().to("http://petstore.swagger.io/v2/swagger.json");
+        driver.navigate().to("http://dummy.restapiexample.com/api/v1/employee/57377");
         utils.waitFor(3);
 
         String responseMessage = cdpClient.getResponseMessage("Network.requestWillBeSent", 5);
@@ -65,8 +65,15 @@ public class CDPDemo {
     @Test
     public void mockResponseCalls() throws Exception {
         cdpClient.sendMessage(MessageBuilder.buildRequestInterceptorPatternMessage(2000, "*", "Document"));
+        cdpClient.sendMockedResponse("Mock Data !");
+
+        driver.navigate().to("http://www.google.com");
+        utils.waitFor(5);
+
+        cdpClient.sendMessage(MessageBuilder.buildRequestInterceptorPatternMessage(2000, "*", "Document"));
         cdpClient.sendMockedResponse("Automate and Chill !");
-        driver.navigate().to("http://petstore.swagger.io/v2/swagger.json");
+
+        driver.navigate().refresh();
         utils.waitFor(5);
     }
 
