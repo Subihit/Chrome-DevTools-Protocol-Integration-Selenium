@@ -4,8 +4,8 @@ import org.apache.commons.codec.binary.Base64;
 
 public class MessageBuilder {
 
-    public static String geoLocationMessage(int id, double latitude, double longitude) {
-        Message message = new Message(id, "Emulation.setGeolocationOverride");
+    public static String geoLocationMessage(String methodName,int id, double latitude, double longitude) {
+        Message message = new Message(id, methodName);
         message.addParameter("latitude", latitude);
         message.addParameter("longitude", longitude);
         message.addParameter("accuracy", 100);
