@@ -33,4 +33,9 @@ public class MessageBuilder {
         return message;
     }
 
+    public static String buildGetContinueInterceptedRequestEncodedMessage(int id, String interceptionId, String encodedResponse) {
+        String message = String.format("{\"id\":%s,\"method\":\"Network.continueInterceptedRequest\",\"params\":{\"interceptionId\":\"%s\",\"rawResponse\":\"%s\"}}", id, interceptionId, encodedResponse);
+        return message;
+    }
+
 }

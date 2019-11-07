@@ -101,5 +101,23 @@ public class CDPClient {
         }).start();
     }
 
+    public void sendMockedImage(String encodedMessage) {
+        new Thread(() -> {
+            try {
+                while (true) {
+                    String message = this.getResponseMessage("Network.requestIntercepted", 10);
+                    JSONObject jsonObject = new JSONObject(message);
+                    String interceptionId = jsonObject.getJSONObject("params").getString("interceptionId");
+//                    int id1 = Utils.getInstance().getDynamicID();
+//                    this.sendMessage(MessageBuilder.buildGetResponseBodyForInterceptionMessage(id1,interceptionId));
+//                    String interceptedResponse = this.getResponseBodyMessage(id1);
+                    this.sendMessage(MessageBuilder.buildGetContinueInterceptedRequestEncodedMessage(20, interceptionId, encodedMessage));
+                }
+            } catch (Exception e) {
+                //do nothing
+            }
+        }).start();
+    }
+
 
 }
