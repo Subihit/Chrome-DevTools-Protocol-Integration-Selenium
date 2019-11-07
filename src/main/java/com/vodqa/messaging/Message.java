@@ -17,6 +17,11 @@ public class Message {
         this.method = methodName;
     }
 
+    public Message(int id, String domain, String methodName) {
+        this.id = id;
+        this.method = domain + "." + methodName;
+    }
+
     public void addParameter(String key, Object value) {
         if (Objects.isNull(params))
             params = new HashMap<>();

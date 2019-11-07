@@ -33,8 +33,8 @@ public class CDPDemo {
     }
 
     @Test
-    public void mockGeoLocation() throws IOException, WebSocketException, InterruptedException {
-        cdpClient.sendMessage(MessageBuilder.geoLocationMessage("Emulation.setGeolocationOverride", 90, 51.501364, -0.1440787));
+    public void mockGeoLocation() throws IOException, WebSocketException {
+        cdpClient.sendMessage(MessageBuilder.geoLocationMessage(90, "Emulation", "setGeolocationOverride", 51.501364, -0.1440787));
 
         driver.navigate().to("https://www.google.com/maps");
         utils.waitFor(5);
@@ -45,9 +45,9 @@ public class CDPDemo {
 
     @Test
     public void monitorNetworkCalls() throws IOException, WebSocketException, InterruptedException {
-        cdpClient.sendMessage(MessageBuilder.enableNetworkCallMonitoringMessage(200));
+        cdpClient.sendMessage(MessageBuilder.enableNetworkCallMonitoringMessage(200, "Network", "enable"));
 
-        driver.navigate().to("http://dummy.restapiexample.com/api/v1/employee/57377");
+        driver.navigate().to("http://dummy.restapiexample.com/api/v1/employee/26208");
         utils.waitFor(3);
 
         String responseMessage = cdpClient.getResponseMessage("Network.requestWillBeSent", 5);
@@ -76,6 +76,8 @@ public class CDPDemo {
         driver.navigate().refresh();
         utils.waitFor(5);
     }
+
+
 //    @Test
 //    public void mockImageCalls() throws Exception {
 //        byte[] fileContent= FileUtils.readFileToByteArray(new File("Flipkartlogo.png"));

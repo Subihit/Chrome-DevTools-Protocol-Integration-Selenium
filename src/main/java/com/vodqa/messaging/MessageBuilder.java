@@ -4,16 +4,16 @@ import org.apache.commons.codec.binary.Base64;
 
 public class MessageBuilder {
 
-    public static String geoLocationMessage(String methodName,int id, double latitude, double longitude) {
-        Message message = new Message(id, methodName);
+    public static String geoLocationMessage(int id, String domain, String methodName, double latitude, double longitude) {
+        Message message = new Message(id, domain, methodName);
         message.addParameter("latitude", latitude);
         message.addParameter("longitude", longitude);
         message.addParameter("accuracy", 100);
         return message.toJSON();
     }
 
-    public static String enableNetworkCallMonitoringMessage(int id) {
-        String message = String.format("{\"id\":%s,\"method\":\"Network.enable\",\"params\":{\"maxTotalBufferSize\":10000000,\"maxResourceBufferSize\":5000000}}", id);
+    public static String enableNetworkCallMonitoringMessage(int id, String domain, String methodName) {
+        String message = String.format("{\"id\":%s,\"method\":\"%s.%s\",\"params\":{\"maxTotalBufferSize\":10000000,\"maxResourceBufferSize\":5000000}}", id, domain, methodName);
         return message;
     }
 
