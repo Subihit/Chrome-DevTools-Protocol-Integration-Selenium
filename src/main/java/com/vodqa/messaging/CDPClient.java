@@ -93,7 +93,7 @@ public class CDPClient {
                 String message = this.getResponseMessage("Network.requestIntercepted", 5);
                 JSONObject jsonObject = new JSONObject(message);
                 String interceptionId = jsonObject.getJSONObject("params").getString("interceptionId");
-                this.sendMessage(MessageBuilder.buildGetContinueInterceptedRequestMessage(2000, interceptionId, mockMessage));
+                this.sendMessage(Messages.buildGetContinueInterceptedRequestMessage(2000, interceptionId, mockMessage));
                 return;
             } catch (Exception e) {
                 //do nothing
@@ -108,13 +108,9 @@ public class CDPClient {
                     String message = this.getResponseMessage("Network.requestIntercepted", 10);
                     JSONObject jsonObject = new JSONObject(message);
                     String interceptionId = jsonObject.getJSONObject("params").getString("interceptionId");
-//                    int id1 = Utils.getInstance().getDynamicID();
-//                    this.sendMessage(MessageBuilder.buildGetResponseBodyForInterceptionMessage(id1,interceptionId));
-//                    String interceptedResponse = this.getResponseBodyMessage(id1);
-                    this.sendMessage(MessageBuilder.buildGetContinueInterceptedRequestEncodedMessage(20, interceptionId, encodedMessage));
+                    this.sendMessage(Messages.buildGetContinueInterceptedRequestEncodedMessage(20, interceptionId, encodedMessage));
                 }
             } catch (Exception e) {
-                //do nothing
             }
         }).start();
     }

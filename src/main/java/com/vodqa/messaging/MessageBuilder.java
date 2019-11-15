@@ -1,41 +1,37 @@
 package com.vodqa.messaging;
 
-import org.apache.commons.codec.binary.Base64;
+import com.google.gson.Gson;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class MessageBuilder {
 
-    public static String geoLocationMessage(int id, String domain, String methodName, double latitude, double longitude) {
-        Message message = new Message(id, domain, methodName);
-        message.addParameter("latitude", latitude);
-        message.addParameter("longitude", longitude);
-        message.addParameter("accuracy", 100);
-        return message.toJSON();
+    int id;
+    public String method;
+    public Map<String, Object> params;
+
+    public MessageBuilder(int id, String domain, String methodName) {
+        this.id = id;
+        this.method = domain + "." + methodName;
     }
 
-    public static String enableNetworkCallMonitoringMessage(int id, String domain, String methodName) {
-        String message = String.format("{\"id\":%s,\"method\":\"%s.%s\",\"params\":{\"maxTotalBufferSize\":10000000,\"maxResourceBufferSize\":5000000}}", id, domain, methodName);
-        return message;
+    public MessageBuilder(String methodName) {
+
+        this.method = methodName;
     }
 
-    public static String getResponseBodyMessage(int id, String requestID) {
-        String message = String.format("{\"id\":%s,\"method\":\"Network.getResponseBody\",\"params\":{\"requestId\":\"%s\"}}", id, requestID);
-        return message;
+    public void addParameter(String key, Object value) {
+        if (Objects.isNull(params))
+            params = new HashMap<>();
+        params.put(key, value);
     }
 
-    public static String buildRequestInterceptorPatternMessage(int id, String pattern, String resourceType) {
-        String message = String.format("{\"id\":%s,\"method\":\"Network.setRequestInterception\",\"params\":{\"patterns\":[{\"urlPattern\":\"%s\",\"resourceType\":\"%s\",\"interceptionStage\":\"HeadersReceived\"}]}}", id, pattern, resourceType);
-        return message;
+    public String toJSON() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 
-    public static String buildGetContinueInterceptedRequestMessage(int id, String interceptionId, String response) {
-        String encodedResponse = new String(Base64.encodeBase64(response.getBytes()));
-        String message = String.format("{\"id\":%s,\"method\":\"Network.continueInterceptedRequest\",\"params\":{\"interceptionId\":\"%s\",\"rawResponse\":\"%s\"}}", id, interceptionId, encodedResponse);
-        return message;
-    }
-
-    public static String buildGetContinueInterceptedRequestEncodedMessage(int id, String interceptionId, String encodedResponse) {
-        String message = String.format("{\"id\":%s,\"method\":\"Network.continueInterceptedRequest\",\"params\":{\"interceptionId\":\"%s\",\"rawResponse\":\"%s\"}}", id, interceptionId, encodedResponse);
-        return message;
-    }
 
 }
